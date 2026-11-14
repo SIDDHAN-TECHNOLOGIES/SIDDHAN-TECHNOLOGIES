@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>SIDDHAN TECHNOLOGIES | 3D, Game Art & Creative Media Career Directory</title>
+  <meta name="description" content="SIDDHAN TECHNOLOGIES — Software-Wise Breakdown of 85 Industry Roles Across 11 Suites: AAA Gaming, Film VFX, ArchViz, Video, Motion Graphics & Audio Production.">
+  <meta name="theme-color" content="#070b12">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20%220%22%20%22100%22%20%22100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- Ambient Glowing Atmosphere -->
+  <div class="bg-ambient">
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+    <div class="glow-orb-3"></div>
+  </div>
+
+  <!-- Top Sticky Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      
+      <!-- Brand Logo: SIDDHAN TECHNOLOGIES -->
+      <a class="logo-area" onclick="window.SiddhanTech.switchView('cards')">
+        <div class="logo-icon-box">
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+            <polygon points="12 2 2 7 12 12 22 7 12 2" stroke="#38bdf8"></polygon>
+            <polyline points="2 17 12 22 22 17" stroke="#6366f1"></polyline>
+            <polyline points="2 12 12 17 22 12" stroke="#ec4899"></polyline>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <div class="logo-brand">SIDDHAN<span>TECH</span></div>
+          <div class="logo-sub">CAREER INTELLIGENCE MATRIX</div>
+        </div>
+      </a>
+
+      <!-- Center Desktop Navigation Tabs -->
+      <nav class="nav-center">
+        <button class="nav-tab-btn active" data-view="cards">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span>Catalog</span>
+        </button>
+
+        <button class="nav-tab-btn" data-view="table">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"></path></svg>
+          <span>Master Table</span>
+        </button>
+
+        <button class="nav-tab-btn" data-view="analytics">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span>Analytics</span>
+        </button>
+
+        <button class="nav-tab-btn" data-view="roadmaps">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+          <span>Pipelines</span>
+        </button>
+
+        <button class="nav-tab-btn" data-view="compare">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+          <span>Compare</span>
+        </button>
+      </nav>
+
+      <!-- Nav Actions (Desktop & Mobile Friendly) -->
+      <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button class="btn-icon-nav" id="themeToggleBtn" title="Toggle Light/Dark Theme">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <!-- Compare Tray Quick Trigger -->
+        <button class="btn-icon-nav" onclick="window.SiddhanTech.switchView('compare')" title="Role Comparison Matrix">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+            <polyline points="16 3 21 3 21 8"></polyline>
+            <line x1="4" y1="20" x2="21" y2="3"></line>
+            <polyline points="21 16 21 21 16 21"></polyline>
+            <line x1="15" y1="15" x2="21" y2="21"></line>
+            <line x1="4" y1="4" x2="9" y2="9"></line>
+          </svg>
+          <span class="badge-count" id="compareCountBadge" style="display: none;">0</span>
+        </button>
+
+        <!-- Shortlist / Bookmarks Trigger -->
+        <button class="btn-icon-nav" onclick="window.SiddhanTech.openBookmarksModal()" title="View Saved Shortlist">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span class="badge-count" id="bookmarkCountBadge" style="display: none;">0</span>
+        </button>
+
+        <!-- Career Matcher Wizard CTA (Desktop) -->
+        <button class="btn-primary-action" onclick="window.SiddhanTech.openCareerWizard()">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span>Find My Path</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-pill-badge">
+        <span class="pulse-dot"></span>
+        <span>SIDDHAN TECHNOLOGIES PRODUCTION MATRIX</span>
+      </div>
+
+      <h1 class="hero-title">
+        Master The <span class="siddhan-gradient-text">3D, Game Art</span> & <br>
+        <span class="cyan-gradient-text">Creative Media</span> Universe
+      </h1>
+
+      <p class="hero-desc">
+        Software-wise blueprint of <strong>85 industry production roles</strong> across <strong>11 suites</strong>: AAA Video Games, Feature Film VFX, Photorealistic ArchViz, Video Editing, Motion Graphics, and Audio Engineering.
+      </p>
+
+      <!-- Key Metrics Row -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">85</div>
+          <div class="stat-label">Production Roles</div>
+          <div class="stat-sub">100% Industry Verified</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-number">11</div>
+          <div class="stat-label">Software Suites</div>
+          <div class="stat-sub">3D, VFX, Video, MoGraph & Audio</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-number">10+</div>
+          <div class="stat-label">Production Hubs</div>
+          <div class="stat-sub">Bengaluru, Mumbai, Chennai & More</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-number">8+</div>
+          <div class="stat-label">Core Verticals</div>
+          <div class="stat-sub">Games, Film, Post, ArchViz, Sim</div>
+        </div>
+      </div>
+
+      <!-- Swipeable Software Quick-Jump Strip for all 11 suites -->
+      <div class="software-strip-wrapper">
+        <div class="software-strip" id="softwareStrip">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls & Filter Toolbar -->
+    <section class="controls-bar">
+      <!-- Search Input -->
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search 85 roles, tools (Nuke, Resolve, C++, Lumen, Premiere)...">
+        <button class="search-clear-btn" id="searchClearBtn" title="Clear Search">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Mobile Filter Trigger Button -->
+      <button class="btn-mobile-filter-trigger" onclick="window.SiddhanTech.openMobileFilterModal()">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+        <span>Filters</span>
+        <span class="filter-active-indicator" id="mobileFilterIndicator" style="display: none;"></span>
+      </button>
+
+      <!-- Desktop Dropdown Filters -->
+      <div class="filter-dropdowns">
+        <!-- Industry Select -->
+        <div class="select-wrapper">
+          <select class="custom-select" id="industryFilter">
+            <option value="all">All Industries</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+
+        <!-- Production Hub Select -->
+        <div class="select-wrapper">
+          <select class="custom-select" id="hubFilter">
+            <option value="all">All Production Hubs</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+
+        <!-- Sort Select -->
+        <div class="select-wrapper">
+          <select class="custom-select" id="sortSelect">
+            <option value="id-asc">Sort: Role ID</option>
+            <option value="title-asc">Sort: Title (A-Z)</option>
+            <option value="title-desc">Sort: Title (Z-A)</option>
+            <option value="demand-desc">Sort: Demand (Highest)</option>
+            <option value="software">Sort: Software</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+
+        <!-- View Toggle (Cards vs Table) -->
+        <div class="view-mode-toggle">
+          <button class="btn-view-toggle active" data-view="cards" title="Grid Card View">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          </button>
+          <button class="btn-view-toggle" data-view="table" title="Matrix Table View">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"></path></svg>
+          </button>
+        </div>
+
+        <!-- Reset Button -->
+        <button class="btn-reset-filters" id="resetFiltersBtn" title="Reset all applied filters">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          <span>Reset</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Active Filter Chips & Results Count -->
+    <div class="results-status-bar">
+      <div class="results-count" id="rolesCountDisplay">
+        Showing <span>85</span> of <span>85</span> roles
+      </div>
+      <div class="active-filter-chips" id="activeFilterChips"></div>
+    </div>
+
+    <!-- ==========================================
+         VIEW 1: ROLE CARDS GRID
+         ========================================== -->
+    <section id="viewCards">
+      <div class="roles-grid" id="rolesGrid">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 2: MASTER SPREADSHEET TABLE
+         ========================================== -->
+    <section id="viewTable" style="display: none;">
+      <div class="table-view-container">
+        <div class="table-responsive">
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>Role ID</th>
+                <th>Software Suite</th>
+                <th>Job Role</th>
+                <th>Primary Industry</th>
+                <th>Core Responsibilities</th>
+                <th>Companion Tools</th>
+                <th>Production Hubs</th>
+              </tr>
+            </thead>
+            <tbody id="matrixTableBody">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 3: ECOSYSTEM ANALYTICS & HUB MAPS
+         ========================================== -->
+    <section id="viewAnalytics" class="analytics-dashboard" style="display: none;">
+      <div class="analytics-grid-top">
+        
+        <!-- Software Distribution Panel -->
+        <div class="analytics-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">
+              <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--primary)" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10H12V2z"></path></svg>
+              Software Suite Market Share
+            </h3>
+            <span class="panel-tag">85 TOTAL ROLES</span>
+          </div>
+          <div id="analyticsSoftwareBars">
+            <!-- Rendered via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Top Metro Production Hubs Panel -->
+        <div class="analytics-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">
+              <svg viewBox="0 0 24 24" width="20" height="20" stroke="#f43f5e" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              Top Production Hubs & Markets
+            </h3>
+            <span class="panel-tag">PAN-INDIA & GLOBAL</span>
+          </div>
+          <div class="hubs-ranking-list" id="analyticsHubsList">
+            <!-- Rendered via JavaScript -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Cross-Discipline Tool Synergy Cloud -->
+      <div class="analytics-panel">
+        <div class="panel-header">
+          <h3 class="panel-title">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="#f59e0b" stroke-width="2" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Most In-Demand Companion Technologies
+          </h3>
+          <span class="panel-tag">CROSS-TOOL SYNERGY</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.25rem;">
+          These companion software tools appear most frequently alongside the 11 primary suites across job postings. Tap any tool to filter corresponding roles.
+        </p>
+        <div class="tool-synergy-grid" id="analyticsToolsGrid">
+          <!-- Rendered via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 4: PRODUCTION PIPELINE ROADMAPS
+         ========================================== -->
+    <section id="viewRoadmaps" style="display: none;">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto 2rem;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.4rem;">Studio Production Pipelines</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">
+          Explore how 3D modeling, dynamic simulations, post-production video editing, color grading, and Nuke compositing connect sequentially in modern studios.
+        </p>
+      </div>
+
+      <div class="pipelines-container" id="pipelinesContainer">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+    <!-- ==========================================
+         VIEW 5: ROLE COMPARISON MATRIX
+         ========================================== -->
+    <section id="viewCompare" style="display: none;">
+      <div class="comparison-container" id="comparisonContainer">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MOBILE BOTTOM NAVIGATION BAR (FIXED)
+       ========================================== -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-item active" data-view="cards" onclick="window.SiddhanTech.switchView('cards')">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      <span>Roles</span>
+    </button>
+
+    <button class="mobile-nav-item" data-view="table" onclick="window.SiddhanTech.switchView('table')">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"></path></svg>
+      <span>Matrix</span>
+    </button>
+
+    <button class="mobile-nav-item" data-view="analytics" onclick="window.SiddhanTech.switchView('analytics')">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+      <span>Analytics</span>
+    </button>
+
+    <button class="mobile-nav-item" data-view="roadmaps" onclick="window.SiddhanTech.switchView('roadmaps')">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+      <span>Pipelines</span>
+    </button>
+
+    <button class="mobile-nav-item" onclick="window.SiddhanTech.openBookmarksModal()">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+      <span>Saved</span>
+      <span class="mobile-nav-badge" id="mobileSavedBadge" style="display: none;">0</span>
+    </button>
+  </nav>
+
+  <!-- ==========================================
+       MODALS & DRAWERS (With Mobile Bottom Sheet)
+       ========================================== -->
+
+  <!-- Modal: Mobile Filters Bottom Sheet -->
+  <div class="modal-overlay" id="mobileFilterModal">
+    <div class="modal-dialog">
+      <div class="sheet-drag-handle"></div>
+      <div class="modal-header">
+        <div>
+          <div class="pipeline-tag">Search & Explore</div>
+          <h2 style="font-size: 1.3rem;">Filter Roles</h2>
+        </div>
+        <button class="modal-close-btn" onclick="window.SiddhanTech.closeModal('mobileFilterModal')">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <div>
+          <label style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-dim); display: block; margin-bottom: 0.4rem; text-transform: uppercase;">Software Suite</label>
+          <select class="custom-select" id="mobileSwSelect" style="width: 100%;">
+            <option value="all">All 11 Software Suites (85)</option>
+            <option value="unreal">Unreal Engine 5 (11)</option>
+            <option value="max">Autodesk 3ds Max (9)</option>
+            <option value="maya">Autodesk Maya (9)</option>
+            <option value="substance">Substance 3D Painter (9)</option>
+            <option value="nuke">Foundry Nuke (8)</option>
+            <option value="photoshop">Adobe Photoshop (8)</option>
+            <option value="resolve">DaVinci Resolve (7)</option>
+            <option value="marvelous">Marvelous Designer (6)</option>
+            <option value="premiere">Adobe Premiere Pro (6)</option>
+            <option value="aftereffects">Adobe After Effects (6)</option>
+            <option value="audition">Adobe Audition (6)</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-dim); display: block; margin-bottom: 0.4rem; text-transform: uppercase;">Primary Industry</label>
+          <select class="custom-select" id="mobileIndSelect" style="width: 100%;">
+            <option value="all">All Industries</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-dim); display: block; margin-bottom: 0.4rem; text-transform: uppercase;">Production Metro Hub</label>
+          <select class="custom-select" id="mobileHubSelect" style="width: 100%;">
+            <option value="all">All Production Hubs</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-dim); display: block; margin-bottom: 0.4rem; text-transform: uppercase;">Sort Order</label>
+          <select class="custom-select" id="mobileSortSelect" style="width: 100%;">
+            <option value="id-asc">Role ID</option>
+            <option value="title-asc">Title (A-Z)</option>
+            <option value="demand-desc">Demand (Highest)</option>
+            <option value="software">Software</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-reset-filters" onclick="window.SiddhanTech.resetAllFilters(); window.SiddhanTech.closeModal('mobileFilterModal');">Reset All</button>
+        <button class="btn-primary-action" style="flex: 1; justify-content: center;" onclick="window.SiddhanTech.applyMobileFilters(); window.SiddhanTech.closeModal('mobileFilterModal');">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Role Blueprint Details -->
+  <div class="modal-overlay" id="roleModal">
+    <div class="modal-dialog">
+      <div class="sheet-drag-handle"></div>
+      <div id="roleModalContent">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Career Matcher Wizard -->
+  <div class="modal-overlay" id="wizardModal">
+    <div class="modal-dialog">
+      <div class="sheet-drag-handle"></div>
+      <div id="wizardModalContent">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Saved Shortlist / Bookmarks -->
+  <div class="modal-overlay" id="bookmarksModal">
+    <div class="modal-dialog">
+      <div class="sheet-drag-handle"></div>
+      <div id="bookmarksModalContent">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Hub -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo-brand" style="margin-bottom: 0.75rem;">SIDDHAN<span>TECH</span></div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; max-width: 380px;">
+            The comprehensive creative technology career intelligence ecosystem for 3D modeling, VFX, character animation, video editing, motion design, digital audio, and Unreal Engine real-time development.
+          </p>
+          <div style="margin-top: 1.25rem; font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8;">
+            85 High-Demand Industry Roles Documented Across 11 Suites
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">3D, VFX & Engines</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('Unreal Engine 5')">Unreal Engine 5 (11)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('3ds Max')">Autodesk 3ds Max (9)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('Maya')">Autodesk Maya (9)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('Substance 3D Painter')">Substance 3D (9)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('Foundry Nuke')">Foundry Nuke (8)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('Marvelous Designer')">Marvelous Designer (6)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Post, Video & Audio</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('Adobe Photoshop')">Photoshop (8)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('DaVinci Resolve')">DaVinci Resolve (7)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('Adobe Premiere Pro')">Premiere Pro (6)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('Adobe After Effects')">After Effects (6)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByTool('Adobe Audition')">Adobe Audition (6)</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Career Tools & Hubs</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.openCareerWizard()">Career Pathway Matcher</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.openBookmarksModal()">Export Career Shortlist (CSV)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.switchView('compare')">Side-by-Side Comparison</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.switchView('roadmaps')">Production Pipelines</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByHub('Bengaluru')">Bengaluru & Mumbai Hubs</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByHub('Chennai')">Chennai, Hyd & Pune Hubs</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 SIDDHAN TECHNOLOGIES. All Rights Reserved. Curated for 3D Artists, Animators, Editors, Colorists & TDs.
+        </div>
+        <div>
+          Aligned with Premier Media & Animation Production Standards.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
