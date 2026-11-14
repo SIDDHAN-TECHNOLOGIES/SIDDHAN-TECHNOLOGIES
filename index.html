@@ -496,6 +496,37 @@
     </div>
   </div>
 
+  <!-- Modal: Executive PDF Dossier Preview & Export -->
+  <div class="modal-overlay" id="pdfPreviewModal">
+    <div class="modal-dialog" style="max-width: 880px;">
+      <div class="sheet-drag-handle"></div>
+      <div class="modal-header" style="position: sticky; top: 0; background: var(--bg-secondary); z-index: 10; border-bottom: 1px solid var(--border-medium); display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.4rem;">
+        <div>
+          <div class="pipeline-tag">Executive Document Preview</div>
+          <h2 style="font-size: 1.25rem;">Saved Roles Career Dossier</h2>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap;">
+          <button class="btn-pdf-action" onclick="window.SiddhanTech.downloadPDFFromPreview()" title="Download PDF File">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Download PDF</span>
+          </button>
+          <button class="btn-reset-filters" onclick="window.SiddhanTech.printShortlistPDF()" title="Print or Save via Browser" style="display: flex; align-items: center; gap: 0.35rem;">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Print</span>
+          </button>
+          <button class="modal-close-btn" onclick="window.SiddhanTech.closeModal('pdfPreviewModal')" title="Close Preview">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body" style="padding: 1.25rem; background: rgba(0, 0, 0, 0.45);">
+        <div id="pdfDossierContent" class="pdf-paper-sheet">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification Hub -->
   <div class="toast-container" id="toastContainer"></div>
 
@@ -540,7 +571,8 @@
           <h4 class="footer-col-title">Career Tools & Hubs</h4>
           <ul class="footer-links">
             <li><a href="javascript:void(0)" onclick="window.SiddhanTech.openCareerWizard()">Career Pathway Matcher</a></li>
-            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.openBookmarksModal()">Export Career Shortlist (CSV)</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.openPDFPreviewModal()">Export Saved Roles as PDF</a></li>
+            <li><a href="javascript:void(0)" onclick="window.SiddhanTech.openBookmarksModal()">Saved Roles Shortlist</a></li>
             <li><a href="javascript:void(0)" onclick="window.SiddhanTech.switchView('compare')">Side-by-Side Comparison</a></li>
             <li><a href="javascript:void(0)" onclick="window.SiddhanTech.switchView('roadmaps')">Production Pipelines</a></li>
             <li><a href="javascript:void(0)" onclick="window.SiddhanTech.filterByHub('Bengaluru')">Bengaluru & Mumbai Hubs</a></li>
@@ -559,6 +591,9 @@
       </div>
     </div>
   </footer>
+
+  <!-- Client-Side Vector PDF Engine (Offline-Ready) -->
+  <script src="js/jspdf.umd.min.js"></script>
 
   <!-- Core Scripts -->
   <script src="js/data.js"></script>

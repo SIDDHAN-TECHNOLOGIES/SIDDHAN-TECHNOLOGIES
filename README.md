@@ -92,10 +92,13 @@ Visual step-by-step studio pipelines mapping which roles operate at each product
 ### 6. ⚡ Interactive Career Pathway Matcher (3-Step Quiz)
 - Interactive wizard matching artistic vs. technical preferences and creative passion to the best-suited career roles with instant recommendations.
 
-### 7. 💾 Personal Shortlist & Export System
-- Bookmark roles to browser `localStorage`.
-- One-click export to **CSV** or **JSON**.
-- Formatted **Print / PDF** specification sheet.
+### 7. 💾 Personal Shortlist & Multi-Format PDF Export System
+- Bookmark roles to browser `localStorage` with real-time badge counters.
+- 📕 **Executive Vector PDF Export (`Download PDF`)**: Generates an A4 portrait vector dossier using local `jspdf.umd.min.js` (100% offline-ready, zero canvas rasterization) with branded headers, matrix index, role breakdown cards, companion tool chips, portfolio guidance, and hub listings.
+- 🖨️ **Native Print & Save as PDF (`Print / Save PDF`)**: Zero-dependency print view formatted with `@page` styling for Chrome/Edge/Firefox "Save as PDF" dialogue.
+- 📊 **CSV Spreadsheet Export (`Export CSV`)**: Formatted data table ready for Microsoft Excel, Apple Numbers, and Google Sheets.
+- 📋 **JSON Export (`Export JSON`)**: Clean JSON format for developer workflows and ATS imports.
+- Global trigger: Direct "Export Saved Roles as PDF" link in the footer and Saved Drawer.
 
 ---
 
@@ -105,10 +108,11 @@ Visual step-by-step studio pipelines mapping which roles operate at each product
 d:\Love Boi\MY\Maac\
 ├── index.html          # Mobile-first responsive web application
 ├── css/
-│   └── styles.css      # Cyberpunk UI, mobile bottom nav, 11 software palettes
+│   └── styles.css      # Cyberpunk UI, mobile bottom nav, 11 software palettes, print styles
 ├── js/
 │   ├── data.js         # Complete dataset: 85 roles across 11 suites, pipelines
-│   └── app.js          # Reactive controller: search, mobile filters, modals, export
+│   ├── app.js          # Reactive controller: search, mobile filters, modals, vector PDF
+│   └── jspdf.umd.min.js# Offline vector PDF generation engine
 └── README.md           # Documentation
 ```
 

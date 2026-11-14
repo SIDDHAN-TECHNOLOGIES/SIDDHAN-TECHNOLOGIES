@@ -419,6 +419,169 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 6px 20px rgba(99, 102, 241, 0.55);
 }
 
+.btn-pdf-action {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.5rem 1.05rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);
+  transition: var(--transition);
+  white-space: nowrap;
+  touch-action: manipulation;
+}
+
+.btn-pdf-action:hover, .btn-pdf-action:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 50%, #dc2626 100%);
+}
+
+/* ==========================================================================
+   PDF DOSSIER PAPER PREVIEW STYLES
+   ========================================================================== */
+.pdf-paper-sheet {
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: var(--radius-md);
+  padding: 1.75rem 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  font-family: var(--font-main);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.pdf-dossier-banner {
+  background: linear-gradient(135deg, #090e1a 0%, #17223b 100%);
+  color: #ffffff;
+  padding: 1.4rem 1.6rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.4rem;
+  border-left: 6px solid #38bdf8;
+}
+
+.pdf-dossier-brand {
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+}
+
+.pdf-dossier-brand span {
+  color: #38bdf8;
+}
+
+.pdf-dossier-sub {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-top: 0.2rem;
+  margin-bottom: 0.85rem;
+}
+
+.pdf-dossier-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.pdf-dossier-meta strong {
+  color: #ffffff;
+}
+
+.pdf-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.pdf-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.pdf-summary-table th {
+  background: #f1f5f9;
+  color: #334155;
+  font-weight: 700;
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #cbd5e1;
+}
+
+.pdf-summary-table td {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  vertical-align: top;
+  color: #1e293b;
+}
+
+.pdf-summary-table tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+.pdf-role-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 1.15rem 1.35rem;
+  margin-bottom: 1.1rem;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.pdf-role-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pdf-field {
+  margin-top: 0.65rem;
+}
+
+.pdf-field-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  margin-bottom: 0.2rem;
+}
+
+.pdf-field-val {
+  font-size: 0.86rem;
+  color: #1e293b;
+  line-height: 1.45;
+}
+
+.pdf-portfolio-callout {
+  background: #f0fdf4;
+  border-left: 3px solid #22c55e;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-top: 0.7rem;
+  font-size: 0.82rem;
+  color: #166534;
+}
+
 /* ==========================================================================
    MOBILE BOTTOM NAVIGATION BAR (Fixed Native App Style)
    ========================================================================== */
@@ -2031,7 +2194,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.58rem;
   }
 
-  .btn-primary-action {
+  .site-header .btn-primary-action {
     display: none;
   }
 

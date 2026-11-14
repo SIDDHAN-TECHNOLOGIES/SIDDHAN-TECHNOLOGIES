@@ -1062,13 +1062,21 @@
             }).join('')}
           </div>
 
-          <div style="display: flex; flex-wrap: wrap; gap: 0.65rem;">
-            <button class="btn-primary-action" onclick="window.SiddhanTech.exportShortlistCSV()">
-              <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              Export CSV
+          <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+            <button class="btn-pdf-action" onclick="window.SiddhanTech.openPDFPreviewModal()" title="Preview & Download PDF Dossier">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              PDF Dossier
             </button>
-            <button class="btn-reset-filters" onclick="window.SiddhanTech.exportShortlistJSON()">Export JSON</button>
-            <button class="btn-reset-filters" onclick="window.print()">Print</button>
+            <button class="btn-reset-filters" onclick="window.SiddhanTech.exportShortlistPDF()" title="Download PDF file" style="display: flex; align-items: center; gap: 0.4rem;">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Download PDF
+            </button>
+            <button class="btn-reset-filters" onclick="window.SiddhanTech.printShortlistPDF()" title="Print / Save as PDF via Browser" style="display: flex; align-items: center; gap: 0.4rem;">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              Print
+            </button>
+            <button class="btn-reset-filters" onclick="window.SiddhanTech.exportShortlistCSV()">CSV</button>
+            <button class="btn-reset-filters" onclick="window.SiddhanTech.exportShortlistJSON()">JSON</button>
             <button class="btn-reset-filters" style="margin-left: auto; color: #f87171;" onclick="window.SiddhanTech.clearBookmarks()">Clear All</button>
           </div>
         `}
@@ -1258,8 +1266,822 @@
   }
 
   /**
-   * Export Utilities
+   * PDF Dossier Preview & Generation Engine
    */
+  function openPDFPreviewModal(autoDownload = false) {
+    const list = Array.from(state.bookmarks).map(id => ROLES_DATA.find(r => r.id === id)).filter(Boolean);
+    if (list.length === 0) {
+      showToast('Your shortlist is empty! Bookmark roles before viewing PDF dossier.', 'warning');
+      openBookmarksModal();
+      return;
+    }
+
+    closeModal('bookmarksModal');
+
+    const contentBox = document.getElementById('pdfDossierContent');
+    if (contentBox) {
+      contentBox.innerHTML = generatePDFReportContentHTML(list);
+    }
+
+    const modal = document.getElementById('pdfPreviewModal');
+    if (modal) {
+      modal.classList.add('active');
+    }
+
+    if (autoDownload) {
+      setTimeout(() => {
+        downloadPDFFromPreview();
+      }, 500);
+    }
+  }
+
+  const SW_RGB = {
+    unreal: [2, 132, 199],
+    max: [0, 168, 143],
+    maya: [5, 150, 105],
+    substance: [234, 88, 12],
+    marvelous: [225, 29, 72],
+    photoshop: [37, 99, 235],
+    premiere: [124, 58, 237],
+    aftereffects: [147, 51, 234],
+    audition: [13, 148, 136],
+    resolve: [217, 119, 6],
+    nuke: [220, 38, 38]
+  };
+
+  function downloadPDFFromPreview() {
+    const list = Array.from(state.bookmarks).map(id => ROLES_DATA.find(r => r.id === id)).filter(Boolean);
+    if (list.length === 0) {
+      showToast('Your shortlist is empty! Bookmark roles before downloading PDF.', 'warning');
+      return;
+    }
+
+    showToast('Generating executive vector PDF dossier...', 'info');
+
+    try {
+      const jsPDFConstructor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+      if (!jsPDFConstructor) {
+        throw new Error('jsPDF engine not available');
+      }
+
+      const doc = new jsPDFConstructor({
+        orientation: 'p',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const dateStr = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      // Cover Header on Page 1
+      doc.setFillColor(9, 14, 26);
+      doc.roundedRect(14, 14, 182, 30, 2.5, 2.5, 'F');
+
+      doc.setFillColor(56, 189, 248);
+      doc.roundedRect(14, 14, 3.5, 30, 1.5, 1.5, 'F');
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text('SIDDHAN TECHNOLOGIES', 22, 24);
+
+      doc.setTextColor(148, 163, 184);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.text('EXECUTIVE CAREER DOSSIER & CREATIVE PRODUCTION TALENT BLUEPRINT', 22, 30);
+
+      doc.setTextColor(203, 213, 225);
+      doc.setFontSize(7.5);
+      doc.text('Generated: ' + dateStr + '  •  ' + list.length + ' Shortlisted Roles Documented', 22, 37);
+
+      let y = 50;
+
+      // Section 1: Matrix Table Index
+      doc.setTextColor(15, 23, 42);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10.5);
+      doc.text('1. SHORTLIST MATRIX INDEX (' + list.length + ' ROLES)', 14, y);
+      y += 4;
+
+      // Table Header
+      doc.setFillColor(241, 245, 249);
+      doc.rect(14, y, 182, 7, 'F');
+      doc.setDrawColor(203, 213, 225);
+      doc.rect(14, y, 182, 7, 'S');
+
+      doc.setTextColor(51, 65, 85);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.text('SOFTWARE', 17, y + 4.8);
+      doc.text('ID', 52, y + 4.8);
+      doc.text('JOB ROLE TITLE', 72, y + 4.8);
+      doc.text('PRIMARY INDUSTRY', 134, y + 4.8);
+      y += 7;
+
+      // Table Rows
+      list.forEach((role, idx) => {
+        const sw = SOFTWARE_METADATA[role.softwareKey] || { name: role.software };
+        const swRgb = SW_RGB[role.softwareKey] || [56, 189, 248];
+
+        if (idx % 2 === 1) {
+          doc.setFillColor(248, 250, 252);
+          doc.rect(14, y, 182, 6.5, 'F');
+        }
+        doc.setDrawColor(226, 232, 240);
+        doc.rect(14, y, 182, 6.5, 'S');
+
+        doc.setTextColor(swRgb[0], swRgb[1], swRgb[2]);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7);
+        doc.text(sw.name, 17, y + 4.5);
+
+        doc.setTextColor(51, 65, 85);
+        doc.setFont('helvetica', 'bold');
+        doc.text(role.id, 52, y + 4.5);
+
+        doc.setTextColor(15, 23, 42);
+        doc.text(role.title.length > 36 ? role.title.slice(0, 34) + '...' : role.title, 72, y + 4.5);
+
+        doc.setTextColor(71, 85, 105);
+        doc.setFont('helvetica', 'normal');
+        doc.text(role.industry.length > 28 ? role.industry.slice(0, 26) + '...' : role.industry, 134, y + 4.5);
+
+        y += 6.5;
+      });
+
+      y += 8;
+
+      // Section 2: Detailed Role Breakdowns
+      if (y > 240) {
+        doc.addPage();
+        y = 16;
+      }
+
+      doc.setTextColor(15, 23, 42);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10.5);
+      doc.text('2. DETAILED ROLE SPECIFICATIONS & PORTFOLIO GUIDELINES', 14, y);
+      y += 5;
+
+      list.forEach((role) => {
+        const sw = SOFTWARE_METADATA[role.softwareKey] || { name: role.software };
+        const swRgb = SW_RGB[role.softwareKey] || [56, 189, 248];
+
+        const respLines = doc.splitTextToSize(role.responsibilities, 168);
+        const wfText = role.dayInTheLife || 'Active daily asset creation, review checkpoints, and cross-department pipeline integration.';
+        const wfLines = doc.splitTextToSize(wfText, 168);
+        const toolsText = 'Companion Tools: ' + role.companionTools.join(', ');
+        const toolsLines = doc.splitTextToSize(toolsText, 168);
+        const tipLines = role.portfolioTip ? doc.splitTextToSize('Portfolio Guidance: ' + role.portfolioTip, 162) : [];
+        const hubsText = 'Key Production Hubs: ' + role.hubs.join(' • ');
+
+        let cardHeight = 22 + (respLines.length * 3.4) + (wfLines.length * 3.4) + (toolsLines.length * 3.4) + 8;
+        if (tipLines.length > 0) {
+          cardHeight += (tipLines.length * 3.4) + 6;
+        }
+        cardHeight += 6; // room for hubs line + bottom padding
+
+        if (y + cardHeight > 280) {
+          doc.addPage();
+          y = 16;
+        }
+
+        // Draw Card Box
+        doc.setFillColor(255, 255, 255);
+        doc.setDrawColor(218, 226, 236);
+        doc.roundedRect(14, y, 182, cardHeight, 2, 2, 'FD');
+
+        // Color accent strip on left
+        doc.setFillColor(swRgb[0], swRgb[1], swRgb[2]);
+        doc.roundedRect(14, y, 3.2, cardHeight, 1, 1, 'F');
+
+        // Badges: ID, Software, Demand
+        doc.setFillColor(226, 232, 240);
+        doc.roundedRect(20, y + 3.2, 16, 4.5, 1, 1, 'F');
+        doc.setTextColor(51, 65, 85);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7);
+        doc.text(role.id, 22, y + 6.5);
+
+        doc.setFillColor(swRgb[0], swRgb[1], swRgb[2]);
+        doc.roundedRect(38, y + 3.2, 30, 4.5, 1, 1, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.text(sw.name, 40, y + 6.5);
+
+        doc.setFillColor(22, 101, 52);
+        doc.circle(73, y + 5.2, 0.9, 'F');
+        doc.setTextColor(22, 101, 52);
+        doc.setFontSize(7);
+        doc.text(role.demandLevel + ' Demand', 75.5, y + 6.5);
+
+        // Role Title & Industry
+        doc.setTextColor(15, 23, 42);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.text(role.title, 20, y + 13);
+
+        doc.setTextColor(2, 132, 199);
+        doc.setFontSize(8);
+        doc.text(role.industry, 20, y + 17.5);
+
+        // Responsibilities
+        let curY = y + 21.5;
+        doc.setTextColor(100, 116, 139);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(6.5);
+        doc.text('CORE RESPONSIBILITIES:', 20, curY);
+        curY += 3.5;
+
+        doc.setTextColor(30, 41, 59);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.text(respLines, 20, curY);
+        curY += (respLines.length * 3.4) + 2.5;
+
+        // Daily Workflow
+        doc.setTextColor(100, 116, 139);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(6.5);
+        doc.text('PRODUCTION WORKFLOW:', 20, curY);
+        curY += 3.5;
+
+        doc.setTextColor(30, 41, 59);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.text(wfLines, 20, curY);
+        curY += (wfLines.length * 3.4) + 2.5;
+
+        // Companion Tools
+        doc.setTextColor(51, 65, 85);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.text(toolsLines, 20, curY);
+        curY += (toolsLines.length * 3.4) + 2.5;
+
+        // Portfolio Guidance Box
+        if (tipLines.length > 0) {
+          const boxH = (tipLines.length * 3.4) + 4;
+          doc.setFillColor(240, 253, 244);
+          doc.rect(20, curY - 2.5, 170, boxH, 'F');
+          doc.setFillColor(34, 197, 94);
+          doc.rect(20, curY - 2.5, 1.5, boxH, 'F');
+
+          doc.setTextColor(20, 83, 45);
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(7.5);
+          doc.text(tipLines, 24, curY + 1);
+          curY += boxH + 2;
+        }
+
+        // Production Hubs
+        doc.setTextColor(100, 116, 139);
+        doc.setFontSize(7);
+        doc.text(hubsText, 20, curY + 1.5);
+
+        y += cardHeight + 4.5;
+      });
+
+      // Page Footers on all pages
+      const totalPages = doc.internal.getNumberOfPages();
+      for (let p = 1; p <= totalPages; p++) {
+        doc.setPage(p);
+        doc.setDrawColor(226, 232, 240);
+        doc.line(14, 287, 196, 287);
+        doc.setTextColor(148, 163, 184);
+        doc.setFontSize(7);
+        doc.text('SIDDHAN TECHNOLOGIES • Confidential Career Roadmap & Production Dossier', 14, 291);
+        doc.text('Page ' + p + ' of ' + totalPages, 180, 291);
+      }
+
+      const fileName = 'SIDDHAN_TECHNOLOGIES_Saved_Roles_' + new Date().toISOString().slice(0, 10) + '.pdf';
+      doc.save(fileName);
+      showToast('Downloaded vector PDF: ' + fileName, 'success');
+    } catch (err) {
+      console.warn('Vector PDF generation error, using native print fallback:', err);
+      printShortlistPDF();
+    }
+  }
+
+  function exportShortlistPDF() {
+    openPDFPreviewModal(true);
+  }
+
+  function printShortlistPDF() {
+    const list = Array.from(state.bookmarks).map(id => ROLES_DATA.find(r => r.id === id)).filter(Boolean);
+    if (list.length === 0) {
+      showToast('Your shortlist is empty! Bookmark roles before printing PDF.', 'warning');
+      openBookmarksModal();
+      return;
+    }
+
+    const previewModal = document.getElementById('pdfPreviewModal');
+    if (previewModal && previewModal.classList.contains('active')) {
+      window.print();
+      return;
+    }
+
+    const reportHTML = generatePDFReportHTML(list);
+    openNativePrintWindow(reportHTML);
+  }
+
+  function openNativePrintWindow(htmlContent) {
+    const printWindow = window.open('', '_blank', 'width=1000,height=850,menubar=no,toolbar=no,location=no,status=no');
+    if (printWindow) {
+      printWindow.document.open();
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+      }, 400);
+      showToast('Print preview ready. Select "Save as PDF" to save your file!', 'success');
+    } else {
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.right = '0';
+      iframe.style.bottom = '0';
+      iframe.style.width = '0';
+      iframe.style.height = '0';
+      iframe.style.border = '0';
+      document.body.appendChild(iframe);
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(htmlContent);
+      doc.close();
+      setTimeout(() => {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        setTimeout(() => {
+          if (iframe.parentNode) document.body.removeChild(iframe);
+        }, 15000);
+      }, 400);
+      showToast('Print dialog launched. Select "Save as PDF" to save file!', 'success');
+    }
+  }
+
+  function generatePDFReportContentHTML(roles) {
+    const dateStr = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const swMap = {};
+    roles.forEach(r => {
+      const swName = (SOFTWARE_METADATA[r.softwareKey] && SOFTWARE_METADATA[r.softwareKey].name) || r.software;
+      swMap[swName] = (swMap[swName] || 0) + 1;
+    });
+    const swSummary = Object.entries(swMap).map(([k, v]) => `${k} (${v})`).join(' • ');
+
+    return `
+      <div class="pdf-dossier-banner">
+        <div class="pdf-dossier-brand">SIDDHAN<span>TECH</span></div>
+        <div class="pdf-dossier-sub">Executive Career Dossier & Production Talent Blueprint</div>
+        <div class="pdf-dossier-meta">
+          <div><strong>Date:</strong> ${dateStr}</div>
+          <div><strong>Shortlisted Roles:</strong> ${roles.length}</div>
+          <div><strong>Suites:</strong> ${swSummary}</div>
+        </div>
+      </div>
+
+      <div style="font-size: 1.05rem; font-weight: 700; color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem; margin-bottom: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between;">
+        <span>1. Shortlist Matrix Index</span>
+        <span style="font-size: 0.75rem; font-weight: normal; color: #64748b;">${roles.length} Roles Selected</span>
+      </div>
+
+      <div class="pdf-table-wrap">
+        <table class="pdf-summary-table">
+          <thead>
+            <tr>
+              <th style="width: 14%;">Software</th>
+              <th style="width: 12%;">ID</th>
+              <th style="width: 28%;">Role Title</th>
+              <th style="width: 22%;">Primary Industry</th>
+              <th style="width: 24%;">Production Hubs</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${roles.map(r => {
+              const sw = SOFTWARE_METADATA[r.softwareKey] || { name: r.software, color: '#475569' };
+              return `
+                <tr>
+                  <td><span style="font-weight: 700; color: ${sw.color};">${sw.name}</span></td>
+                  <td><code>${r.id}</code></td>
+                  <td><strong>${r.title}</strong></td>
+                  <td>${r.industry}</td>
+                  <td>${r.hubs.slice(0, 3).join(', ')}</td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="font-size: 1.05rem; font-weight: 700; color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem; margin: 1.5rem 0 1rem; text-transform: uppercase; letter-spacing: 0.5px;">
+        2. Detailed Role Specifications
+      </div>
+
+      <div>
+        ${roles.map(role => {
+          const sw = SOFTWARE_METADATA[role.softwareKey] || { name: role.software, color: '#38bdf8' };
+          return `
+            <div class="pdf-role-card" style="border-left: 5px solid ${sw.color};">
+              <div class="pdf-role-top">
+                <div>
+                  <div style="display: flex; gap: 0.4rem; align-items: center; margin-bottom: 0.25rem;">
+                    <span style="font-family: monospace; font-size: 0.72rem; font-weight: 700; background: #e2e8f0; color: #334155; padding: 2px 6px; border-radius: 4px;">${role.id}</span>
+                    <span style="font-size: 0.72rem; font-weight: 700; background: ${sw.color}; color: #ffffff; padding: 2px 7px; border-radius: 4px; text-transform: uppercase;">${sw.name}</span>
+                    <span style="font-size: 0.72rem; font-weight: 700; color: #166534; background: #dcfce7; padding: 2px 7px; border-radius: 4px;">● ${role.demandLevel} Demand</span>
+                  </div>
+                  <div style="font-size: 1.15rem; font-weight: 800; color: #0f172a; line-height: 1.25;">${role.title}</div>
+                  <div style="font-size: 0.8rem; font-weight: 600; color: #0284c7; margin-top: 0.15rem;">${role.industry}</div>
+                </div>
+              </div>
+
+              <div class="pdf-field">
+                <div class="pdf-field-label">Core Industry Responsibilities</div>
+                <div class="pdf-field-val">${role.responsibilities}</div>
+              </div>
+
+              <div class="pdf-field">
+                <div class="pdf-field-label">Day-in-the-Life & Production Workflow</div>
+                <div class="pdf-field-val">${role.dayInTheLife || 'Active daily asset creation, review checkpoints, and cross-department pipeline integration.'}</div>
+              </div>
+
+              <div class="pdf-field">
+                <div class="pdf-field-label">Companion Software & Synergy Stack</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.25rem;">
+                  ${role.companionTools.map(t => `<span style="font-size: 0.72rem; font-weight: 600; background: #f1f5f9; color: #334155; padding: 2px 6px; border-radius: 3px; border: 1px solid #e2e8f0;">${t}</span>`).join('')}
+                </div>
+              </div>
+
+              ${role.portfolioTip ? `
+                <div class="pdf-portfolio-callout">
+                  <strong style="color: #14532d;">Portfolio & Hiring Tip:</strong> ${role.portfolioTip}
+                </div>
+              ` : ''}
+
+              <div class="pdf-field" style="margin-top: 0.65rem;">
+                <div class="pdf-field-label">Key Production Hubs</div>
+                <div class="pdf-field-val" style="color: #475569; font-size: 0.8rem;">${role.hubs.join(' • ')}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+
+      <div style="margin-top: 1.75rem; padding-top: 0.9rem; border-top: 1px solid #cbd5e1; font-size: 0.75rem; color: #64748b; display: flex; justify-content: space-between; align-items: center;">
+        <div>&copy; 2026 SIDDHAN TECHNOLOGIES. All Rights Reserved. Curated for Artists, TDs & Production Studios.</div>
+        <div>Confidential Talent Roadmap</div>
+      </div>
+    `;
+  }
+
+  function generatePDFReportHTML(roles) {
+    const dateStr = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const swMap = {};
+    roles.forEach(r => {
+      const swName = (SOFTWARE_METADATA[r.softwareKey] && SOFTWARE_METADATA[r.softwareKey].name) || r.software;
+      swMap[swName] = (swMap[swName] || 0) + 1;
+    });
+    const swSummary = Object.entries(swMap).map(([k, v]) => `${k} (${v})`).join(' • ');
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIDDHAN TECHNOLOGIES - Saved Career Roles Dossier</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 12mm 10mm 12mm 10mm;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .pdf-container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 10px;
+    }
+    .header-banner {
+      background: linear-gradient(135deg, #090e1a 0%, #17223b 100%);
+      color: #ffffff;
+      padding: 22px 26px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 6px solid #38bdf8;
+    }
+    .brand-title {
+      font-size: 22pt;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      margin-bottom: 3px;
+    }
+    .brand-title span {
+      color: #38bdf8;
+    }
+    .brand-subtitle {
+      font-size: 9.5pt;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+    .meta-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 8.8pt;
+      color: #cbd5e1;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .meta-item strong {
+      color: #ffffff;
+    }
+    .section-heading {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin: 20px 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 22px;
+      font-size: 9pt;
+    }
+    .summary-table th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      text-align: left;
+      padding: 7px 9px;
+      border: 1px solid #cbd5e1;
+    }
+    .summary-table td {
+      padding: 7px 9px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    .summary-table tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+    .role-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .role-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .role-badges {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .sw-badge {
+      display: inline-block;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+    .id-badge {
+      display: inline-block;
+      font-size: 7.5pt;
+      font-weight: 700;
+      font-family: monospace;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #e2e8f0;
+      color: #334155;
+    }
+    .demand-badge {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #166534;
+      background: #dcfce7;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .role-title {
+      font-size: 13pt;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+    }
+    .role-industry {
+      font-size: 8.8pt;
+      font-weight: 600;
+      color: #0284c7;
+      margin-top: 2px;
+    }
+    .role-field {
+      margin-top: 8px;
+    }
+    .field-label {
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 2px;
+    }
+    .field-text {
+      font-size: 9pt;
+      color: #1e293b;
+      line-height: 1.4;
+    }
+    .tools-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 3px;
+    }
+    .tool-chip {
+      display: inline-block;
+      font-size: 7.5pt;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: #334155;
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid #e2e8f0;
+    }
+    .portfolio-callout {
+      background: #f0fdf4;
+      border-left: 3px solid #22c55e;
+      padding: 7px 10px;
+      border-radius: 0 4px 4px 0;
+      margin-top: 8px;
+      font-size: 8.8pt;
+      color: #166534;
+    }
+    .portfolio-callout strong {
+      color: #14532d;
+    }
+    .footer-notice {
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #cbd5e1;
+      font-size: 8pt;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      page-break-inside: avoid;
+    }
+  </style>
+</head>
+<body>
+  <div class="pdf-container">
+    <div class="header-banner">
+      <div class="brand-title">SIDDHAN<span>TECH</span></div>
+      <div class="brand-subtitle">Executive Career Dossier & Production Talent Blueprint</div>
+      <div class="meta-grid">
+        <div class="meta-item"><strong>Date:</strong> ${dateStr}</div>
+        <div class="meta-item"><strong>Saved Roles:</strong> ${roles.length}</div>
+        <div class="meta-item"><strong>Software Coverage:</strong> ${swSummary}</div>
+      </div>
+    </div>
+
+    <div class="section-heading">
+      <span>1. Shortlist Matrix Index</span>
+      <span style="font-size: 8.5pt; font-weight: normal; color: #64748b;">${roles.length} Roles Selected</span>
+    </div>
+
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th style="width: 14%;">Software</th>
+          <th style="width: 12%;">ID</th>
+          <th style="width: 28%;">Role Title</th>
+          <th style="width: 22%;">Primary Industry</th>
+          <th style="width: 24%;">Production Hubs</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${roles.map(r => {
+          const sw = SOFTWARE_METADATA[r.softwareKey] || { name: r.software, color: '#475569' };
+          return `
+            <tr>
+              <td><span style="font-weight: 700; color: ${sw.color};">${sw.name}</span></td>
+              <td><code>${r.id}</code></td>
+              <td><strong>${r.title}</strong></td>
+              <td>${r.industry}</td>
+              <td>${r.hubs.slice(0, 3).join(', ')}</td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+
+    <div class="section-heading">
+      <span>2. Detailed Role Specifications</span>
+      <span style="font-size: 8.5pt; font-weight: normal; color: #64748b;">Production Duties & Portfolio Guidelines</span>
+    </div>
+
+    <div class="role-cards-container">
+      ${roles.map(role => {
+        const sw = SOFTWARE_METADATA[role.softwareKey] || { name: role.software, color: '#38bdf8' };
+        return `
+          <div class="role-card" style="border-left: 4px solid ${sw.color};">
+            <div class="role-header">
+              <div>
+                <div class="role-badges">
+                  <span class="id-badge">${role.id}</span>
+                  <span class="sw-badge" style="background: ${sw.color};">${sw.name}</span>
+                  <span class="demand-badge">● ${role.demandLevel} Demand</span>
+                </div>
+                <div class="role-title">${role.title}</div>
+                <div class="role-industry">${role.industry}</div>
+              </div>
+            </div>
+
+            <div class="role-field">
+              <div class="field-label">Core Industry Responsibilities</div>
+              <div class="field-text">${role.responsibilities}</div>
+            </div>
+
+            <div class="role-field">
+              <div class="field-label">Day-in-the-Life & Production Workflow</div>
+              <div class="field-text">${role.dayInTheLife || 'Active daily asset creation, review checkpoints, and cross-department pipeline integration.'}</div>
+            </div>
+
+            <div class="role-field">
+              <div class="field-label">Companion Software & Synergy Stack</div>
+              <div class="tools-list">
+                ${role.companionTools.map(t => `<span class="tool-chip">${t}</span>`).join('')}
+              </div>
+            </div>
+
+            ${role.portfolioTip ? `
+              <div class="portfolio-callout">
+                <strong>Portfolio & Hiring Tip:</strong> ${role.portfolioTip}
+              </div>
+            ` : ''}
+
+            <div class="role-field" style="margin-top: 8px;">
+              <div class="field-label">Key Production Hubs</div>
+              <div class="field-text" style="color: #475569; font-size: 8.5pt;">${role.hubs.join(' • ')}</div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+
+    <div class="footer-notice">
+      <div>&copy; 2026 SIDDHAN TECHNOLOGIES. All Rights Reserved. Curated for Artists, TDs & Production Studios.</div>
+      <div>Confidential Talent Roadmap</div>
+    </div>
+  </div>
+</body>
+</html>`;
+  }
+
   function exportShortlistCSV() {
     const list = Array.from(state.bookmarks).map(id => ROLES_DATA.find(r => r.id === id)).filter(Boolean);
     if (list.length === 0) return;
@@ -1425,6 +2247,7 @@
         closeModal('bookmarksModal');
         closeModal('wizardModal');
         closeModal('mobileFilterModal');
+        closeModal('pdfPreviewModal');
       }
     });
 
@@ -1453,6 +2276,11 @@
     setWizardAnswer,
     exportShortlistCSV,
     exportShortlistJSON,
+    exportShortlistPDF,
+    printShortlistPDF,
+    openPDFPreviewModal,
+    downloadPDFFromPreview,
+    generatePDFReportHTML,
     copyRoleShareText,
     filterByTool,
     filterByHub,
