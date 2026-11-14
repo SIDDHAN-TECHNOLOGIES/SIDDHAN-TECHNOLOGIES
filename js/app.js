@@ -665,9 +665,15 @@
           <h2 style="font-size: 1.45rem;">${role.title}</h2>
           <div style="color: #38bdf8; font-size: 0.85rem; margin-top: 0.2rem;">${role.industry}</div>
         </div>
-        <button class="modal-close-btn" onclick="window.SiddhanTech.closeModal('roleModal')">
-          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <button class="btn-pdf-action" onclick="window.SiddhanTech.exportSingleRolePDF('${role.id}')" title="Download Role Blueprint PDF" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;">
+            <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>PDF</span>
+          </button>
+          <button class="modal-close-btn" onclick="window.SiddhanTech.closeModal('roleModal')">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
       </div>
 
       <div class="modal-body">
@@ -725,7 +731,11 @@
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="${isBookmarked ? 'currentColor' : 'none'}"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
         </button>
 
-        <div style="display: flex; gap: 0.6rem;">
+        <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+          <button class="btn-pdf-action" onclick="window.SiddhanTech.exportSingleRolePDF('${role.id}')" title="Download Role Blueprint PDF" style="padding: 0.45rem 0.95rem; font-size: 0.78rem;">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>PDF Blueprint</span>
+          </button>
           <button class="btn-reset-filters" onclick="window.SiddhanTech.copyRoleShareText('${role.id}')">
             <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             Copy
@@ -1063,12 +1073,8 @@
           </div>
 
           <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
-            <button class="btn-pdf-action" onclick="window.SiddhanTech.openPDFPreviewModal()" title="Preview & Download PDF Dossier">
+            <button class="btn-pdf-action" onclick="window.SiddhanTech.exportShortlistPDF()" title="Download PDF Dossier">
               <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              PDF Dossier
-            </button>
-            <button class="btn-reset-filters" onclick="window.SiddhanTech.exportShortlistPDF()" title="Download PDF file" style="display: flex; align-items: center; gap: 0.4rem;">
-              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
               Download PDF
             </button>
             <button class="btn-reset-filters" onclick="window.SiddhanTech.printShortlistPDF()" title="Print / Save as PDF via Browser" style="display: flex; align-items: center; gap: 0.4rem;">
@@ -1566,7 +1572,201 @@
   }
 
   function exportShortlistPDF() {
-    openPDFPreviewModal(true);
+    downloadPDFFromPreview();
+  }
+
+  function exportSingleRolePDF(roleId) {
+    const role = ROLES_DATA.find(r => r.id === roleId);
+    if (!role) {
+      showToast('Role specification not found', 'warning');
+      return;
+    }
+
+    showToast(`Generating ${role.id} vector PDF blueprint...`, 'info');
+
+    try {
+      const jsPDFConstructor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+      if (!jsPDFConstructor) {
+        throw new Error('jsPDF engine not available');
+      }
+
+      const doc = new jsPDFConstructor({
+        orientation: 'p',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const dateStr = new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      const sw = SOFTWARE_METADATA[role.softwareKey] || { name: role.software };
+      const swRgb = SW_RGB[role.softwareKey] || [56, 189, 248];
+
+      // Executive Header Banner
+      doc.setFillColor(9, 14, 26);
+      doc.roundedRect(14, 14, 182, 30, 2.5, 2.5, 'F');
+
+      doc.setFillColor(swRgb[0], swRgb[1], swRgb[2]);
+      doc.roundedRect(14, 14, 3.5, 30, 1.5, 1.5, 'F');
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text('SIDDHAN TECHNOLOGIES', 22, 24);
+
+      doc.setTextColor(148, 163, 184);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.text('CAREER INTELLIGENCE MATRIX — ROLE SPECIFICATION BLUEPRINT', 22, 30);
+
+      doc.setTextColor(203, 213, 225);
+      doc.setFontSize(7.5);
+      doc.text('Generated: ' + dateStr + '  •  Role ID: ' + role.id + '  •  Software: ' + sw.name, 22, 37);
+
+      let y = 50;
+
+      // Calculate lines
+      const respLines = doc.splitTextToSize(role.responsibilities, 168);
+      const wfText = role.dayInTheLife || 'Active daily asset creation, review checkpoints, and cross-department pipeline integration.';
+      const wfLines = doc.splitTextToSize(wfText, 168);
+      const toolsText = 'Companion Tools: ' + role.companionTools.join(', ');
+      const toolsLines = doc.splitTextToSize(toolsText, 168);
+      const tipLines = role.portfolioTip ? doc.splitTextToSize('Portfolio Guidance: ' + role.portfolioTip, 162) : [];
+      const hubsText = 'Key Production Hubs: ' + role.hubs.join(' • ');
+
+      let cardHeight = 24 + (respLines.length * 3.6) + (wfLines.length * 3.6) + (toolsLines.length * 3.6) + 8;
+      if (tipLines.length > 0) {
+        cardHeight += (tipLines.length * 3.6) + 7;
+      }
+      cardHeight += 7;
+
+      // Draw Card Box
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(218, 226, 236);
+      doc.roundedRect(14, y, 182, cardHeight, 2, 2, 'FD');
+
+      // Left Accent Strip
+      doc.setFillColor(swRgb[0], swRgb[1], swRgb[2]);
+      doc.roundedRect(14, y, 3.2, cardHeight, 1, 1, 'F');
+
+      // Badges: ID, Software, Demand
+      doc.setFillColor(226, 232, 240);
+      doc.roundedRect(20, y + 3.5, 16, 5, 1, 1, 'F');
+      doc.setTextColor(51, 65, 85);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.text(role.id, 22, y + 7);
+
+      doc.setFillColor(swRgb[0], swRgb[1], swRgb[2]);
+      doc.roundedRect(38, y + 3.5, 30, 5, 1, 1, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.text(sw.name, 40, y + 7);
+
+      doc.setFillColor(22, 101, 52);
+      doc.circle(73, y + 5.7, 1, 'F');
+      doc.setTextColor(22, 101, 52);
+      doc.setFontSize(7.5);
+      doc.text(role.demandLevel + ' Demand', 75.5, y + 7);
+
+      // Title & Industry
+      doc.setTextColor(15, 23, 42);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.text(role.title, 20, y + 15);
+
+      doc.setTextColor(2, 132, 199);
+      doc.setFontSize(8.5);
+      doc.text(role.industry, 20, y + 20);
+
+      // Responsibilities
+      let curY = y + 24.5;
+      doc.setTextColor(100, 116, 139);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7);
+      doc.text('CORE RESPONSIBILITIES:', 20, curY);
+      curY += 3.8;
+
+      doc.setTextColor(30, 41, 59);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text(respLines, 20, curY);
+      curY += (respLines.length * 3.6) + 3;
+
+      // Daily Workflow
+      doc.setTextColor(100, 116, 139);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7);
+      doc.text('PRODUCTION WORKFLOW:', 20, curY);
+      curY += 3.8;
+
+      doc.setTextColor(30, 41, 59);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text(wfLines, 20, curY);
+      curY += (wfLines.length * 3.6) + 3;
+
+      // Companion Tools
+      doc.setTextColor(51, 65, 85);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text(toolsLines, 20, curY);
+      curY += (toolsLines.length * 3.6) + 3;
+
+      // Portfolio Guidance Box
+      if (tipLines.length > 0) {
+        const boxH = (tipLines.length * 3.6) + 5;
+        doc.setFillColor(240, 253, 244);
+        doc.rect(20, curY - 2.5, 170, boxH, 'F');
+        doc.setFillColor(34, 197, 94);
+        doc.rect(20, curY - 2.5, 1.5, boxH, 'F');
+
+        doc.setTextColor(20, 83, 45);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.text(tipLines, 24, curY + 1.5);
+        curY += boxH + 3;
+      }
+
+      // Production Hubs
+      doc.setTextColor(100, 116, 139);
+      doc.setFontSize(7.5);
+      doc.text(hubsText, 20, curY + 2);
+
+      // Studio Standards Callout
+      const pipelineY = y + cardHeight + 6;
+      if (pipelineY < 265) {
+        doc.setFillColor(248, 250, 252);
+        doc.setDrawColor(226, 232, 240);
+        doc.roundedRect(14, pipelineY, 182, 16, 2, 2, 'FD');
+
+        doc.setTextColor(99, 102, 241);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7);
+        doc.text('STUDIO PRODUCTION STANDARDS ALIGNED', 20, pipelineY + 5.5);
+
+        doc.setTextColor(71, 85, 105);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7);
+        doc.text('This role specification adheres to premier studio benchmarks across Gaming, Film VFX, and Creative Post-Production.', 20, pipelineY + 11);
+      }
+
+      // Footer
+      doc.setDrawColor(226, 232, 240);
+      doc.line(14, 287, 196, 287);
+      doc.setTextColor(148, 163, 184);
+      doc.setFontSize(7.5);
+      doc.text('SIDDHAN TECHNOLOGIES • ' + role.id + ' Blueprint Specification • Page 1 of 1', 14, 291);
+
+      const fileName = `SIDDHAN_Tech_${role.id}_${role.title.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+      doc.save(fileName);
+      showToast(`Downloaded ${role.id} PDF Blueprint!`, 'success');
+    } catch (err) {
+      console.warn('Single role PDF generation error:', err);
+      showToast('Error generating PDF blueprint', 'error');
+    }
   }
 
   function printShortlistPDF() {
@@ -2277,6 +2477,7 @@
     exportShortlistCSV,
     exportShortlistJSON,
     exportShortlistPDF,
+    exportSingleRolePDF,
     printShortlistPDF,
     openPDFPreviewModal,
     downloadPDFFromPreview,

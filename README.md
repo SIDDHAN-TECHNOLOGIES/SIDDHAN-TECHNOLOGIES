@@ -94,6 +94,7 @@ Visual step-by-step studio pipelines mapping which roles operate at each product
 
 ### 7. 💾 Personal Shortlist & Multi-Format PDF Export System
 - Bookmark roles to browser `localStorage` with real-time badge counters.
+- 📄 **Single Role Blueprint PDF Export**: Dedicated "PDF Blueprint" buttons inside the **View Blueprint** modal (both in the header and footer) to instantly generate and download a single-page vector specification sheet for any of the 85 roles.
 - 📕 **Executive Vector PDF Export (`Download PDF`)**: Generates an A4 portrait vector dossier using local `jspdf.umd.min.js` (100% offline-ready, zero canvas rasterization) with branded headers, matrix index, role breakdown cards, companion tool chips, portfolio guidance, and hub listings.
 - 🖨️ **Native Print & Save as PDF (`Print / Save PDF`)**: Zero-dependency print view formatted with `@page` styling for Chrome/Edge/Firefox "Save as PDF" dialogue.
 - 📊 **CSV Spreadsheet Export (`Export CSV`)**: Formatted data table ready for Microsoft Excel, Apple Numbers, and Google Sheets.
